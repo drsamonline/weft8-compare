@@ -2,12 +2,6 @@
 
 # Weft-8 beside x86 and ARM
 
-<!-- shot:start -->
-
-![Screenshot](docs/shot.png)
-
-<!-- shot:end -->
-
 **Which part is the computer, and which part is the language?**
 
 [![Live columns](https://img.shields.io/badge/live-three%20columns-2f6f4f?style=flat-square&labelColor=1e1f1c)](https://drsamonline.github.io/weft8-compare/)
@@ -22,11 +16,11 @@
 
 ![Three columns](docs/shot.png)
 
-Four small jobs, written three times: for the **Weft-8** (the Loom's 8-bit machine), for **x86-64**, and
+Five small jobs, written three times: for the **Weft-8** (the Loom's 8-bit machine), for **x86-64**, and
 for **AArch64**. Put them side by side and the answer to "what is a computer, really?" stops being
 abstract — load, add, compare, branch, store. Everything else is naming.
 
-## The four jobs
+## The five jobs
 
 | Job | What it shows |
 |---|---|
@@ -34,6 +28,7 @@ abstract — load, add, compare, branch, store. Everything else is naming.
 | **Sum 1 to 5** | x86 does it in two instructions, ARM in one, the Weft-8 in three — `SUB` sets flags but cannot branch |
 | **The greater of two** | a compare, a conditional branch, two paths that converge. Identical shape on all three |
 | **Remember, then recall** | the Weft-8 addresses memory with a literal byte; x86 and ARM compute an address from a frame or stack pointer |
+| **Multiply by four** | two shifts here, one wide instruction there — the same idea in a wider instruction |
 
 ## Honest about the columns
 
@@ -67,6 +62,22 @@ The suite asserts that every Weft-8 listing assembles, halts, fits the 128-byte 
 expected register or memory value; that every job says what it is, what the machines share and what
 actually differs; and that **both illustration columns say they are illustrations** and contain real
 mnemonics rather than a comment pretending to be code.
+
+
+## The Weft-8 family
+
+One machine, seven faces. Every one of these runs `weft8.js` from the Loom, byte for byte —
+learn it once and you have learned all seven.
+
+| | what it is |
+|---|---|
+| [the Loom](https://drsamonline.github.io/app-jacquard/) | the machine and its editor — where it all starts |
+| [Weft Puzzles](https://drsamonline.github.io/app-weft-puzzles/) | five puzzles solved in assembly, a robot on a grid |
+| [Clip Loom](https://drsamonline.github.io/app-clip-loom/) | clipboard programs you can read: strip, squeeze, wrap |
+| [Weft-8 on hardware](https://drsamonline.github.io/weft8-hardware/) | the same machine in C, three-way parity with the JS one |
+| [weft8-kit](https://drsamonline.github.io/weft8-kit/) | rules small enough to sign off |
+| [Weft-8 Classroom](https://drsamonline.github.io/weft8-classroom/) | eight exercises that teach how a computer works |
+| **Weft-8 beside x86 and ARM** (you are here) | the same four jobs in three machines |
 
 ## Licence
 

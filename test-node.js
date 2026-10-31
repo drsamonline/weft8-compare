@@ -20,7 +20,7 @@ const eq = (g, w, n) => ok(JSON.stringify(g) === JSON.stringify(w),
   n + "  (got " + JSON.stringify(g) + ", want " + JSON.stringify(w) + ")");
 
 console.log("the Weft-8 column — it does the job");
-eq(C.ALGORITHMS.length, 4, "four algorithms ship");
+eq(C.ALGORITHMS.length, 5, "five algorithms ship");
 C.ALGORITHMS.forEach(function (alg) {
   const r = C.run(alg);
   eq(r.errors, [], alg.id + ": the Weft-8 listing assembles");
@@ -56,6 +56,21 @@ const html = fs.readFileSync("./docs/play/index.html", "utf8");
 ok(html.indexOf('id="weft"') > 0, "the page has the Weft-8 column");
 ok(html.indexOf('id="x86"') > 0, "the page has the x86 column");
 ok(html.indexOf('id="arm"') > 0, "the page has the ARM column");
+
+
+/* the family — every page links back to the Loom, and the Loom to every page */
+{
+  const fsm = require("fs");
+  const landing = fsm.readFileSync("./docs/index.html", "utf8");
+  ok(landing.indexOf('id="family"') > 0, "the landing page carries the family strip");
+  ok(landing.indexOf("you are here") > 0, "and marks this page as the one you are on");
+  ['app-jacquard', 'app-weft-puzzles', 'app-clip-loom', 'weft8-hardware', 'weft8-kit', 'weft8-classroom'].forEach(function (slug) {
+    ok(landing.indexOf("https://drsamonline.github.io/" + slug + "/") > 0, "it links to " + slug);
+  });
+  const readme = fsm.readFileSync("./README.md", "utf8");
+  ok(readme.indexOf("The Weft-8 family") > 0, "the README carries the family table too");
+  ok(readme.indexOf("you are here") > 0, "and marks this repository in it");
+}
 
 console.log("");
 console.log(pass + " passed, " + failures.length + " failed");

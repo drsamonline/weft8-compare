@@ -17,7 +17,7 @@ const ok = (n, c, x) => { if (c) { pass++; console.log("PASS  " + n); } else { f
 const t = (id) => d.getElementById(id).textContent;
 
 ok("the page boots without an error", errors.length === 0, errors.join("; "));
-ok("four jobs are offered", d.querySelectorAll("#jobs button").length === 4);
+ok("five jobs are offered", d.querySelectorAll("#jobs button").length === 5);
 ok("all three columns are filled", t("weft").length > 20 && t("x86").length > 10 && t("arm").length > 10);
 ok("the Weft-8 column ran", /ran ·/.test(t("weftResult")), t("weftResult"));
 ok("the x86 column is labelled an illustration", /illustration/.test(t("x86")) || /illustration/.test(d.querySelector(".col.x86 .f").textContent));

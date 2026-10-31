@@ -152,6 +152,34 @@
         "        ret"
       ].join("\n"),
       expect: { reg: { 0: 42 }, ram: { 0x80: 42 } }
+    },
+    {
+      id: "times-four",
+      title: "Multiply by four",
+      job: "Take 3 and make it 12 — using shifts, not multiplication.",
+      same: "Every machine can shift left, and a left shift is a multiply by two. Two of them are a multiply by four.",
+      differs: "The Weft-8 shifts one bit per instruction, so 'times four' is two instructions. x86 and ARM both take an immediate shift count, so it is one — the same idea, a wider instruction.",
+      weft: [
+        "; 3 * 4 = 12, with two shifts",
+        "        LDI 3",
+        "        MOV R1, R0",
+        "        SHL R1           ; 6",
+        "        SHL R1           ; 12",
+        "        HLT"
+      ].join("\n"),
+      x86: [
+        "; x86-64 (AT&T) — illustration",
+        "        movl    $3, %eax",
+        "        shll    $2, %eax",
+        "        ret"
+      ].join("\n"),
+      arm: [
+        "; AArch64 — illustration",
+        "        mov     w0, #3",
+        "        lsl     w0, w0, #2",
+        "        ret"
+      ].join("\n"),
+      expect: { reg: { 1: 12 } }
     }
   ];
 
