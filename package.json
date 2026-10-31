@@ -1,0 +1,15 @@
+{
+  "name": "weft8-compare",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Weft-8 beside x86 and ARM \u2014 the same four jobs in three machines, with the Weft-8 column runnable.",
+  "scripts": {
+    "test": "node test-node.js && node tests/page-smoke.js",
+    "test:engine": "node test-node.js",
+    "test:page": "node tests/page-smoke.js"
+  },
+  "devDependencies": {
+    "jsdom": "^29.1.1"
+  },
+  "license": "SEE LICENSE IN LICENSE"
+}

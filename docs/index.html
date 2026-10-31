@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Weft-8 beside x86 and ARM — one job, three machines</title>
+<meta name="description" content="The same four jobs written for the Loom's Weft-8, x86-64 and AArch64, side by side, with the Weft-8 column runnable.">
+<meta name="theme-color" content="#f2f0ea">
+<style>
+  :root{--paper:#f2f0ea;--card:#fbfaf6;--ink:#1e1f1c;--ink2:#4b4d47;--mut:#83857c;--line:#dbd9d0;
+        --weft:#2f6f4f;--x86:#8c4a3b;--arm:#2f5a8c;
+        --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+        --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.7 var(--mono)}
+  a{color:var(--weft)}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 20px 48px}
+  .top{display:flex;align-items:center;gap:12px;padding:18px 0;border-bottom:1px solid var(--line)}
+  .mark{width:24px;height:24px;border:1px solid var(--ink);border-radius:2px;position:relative;background:var(--card)}
+  .mark:before{content:"";position:absolute;left:0;right:0;top:7px;height:1px;background:var(--weft)}
+  .mark:after{content:"";position:absolute;left:0;right:0;top:15px;height:1px;background:var(--x86)}
+  .brand{font:600 12.5px/1 var(--mono);letter-spacing:.2em;text-transform:uppercase}
+  .top .r{margin-left:auto;font-size:12px;color:var(--mut);display:flex;gap:12px}
+  .top .r a{text-decoration:none}
+
+  .hero{display:grid;grid-template-columns:1.05fr .95fr;gap:32px;align-items:center;padding:52px 0 36px}
+  @media (max-width:880px){.hero{grid-template-columns:1fr;padding:30px 0 22px}}
+  .kick{font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--weft);margin:0 0 12px}
+  h1{font:400 clamp(32px,5.4vw,52px)/1.06 var(--serif);margin:0 0 16px;letter-spacing:-.02em}
+  h1 em{font-style:italic;color:var(--weft)}
+  .lede{color:var(--ink2);max-width:54ch;margin:0 0 22px}
+  .cta{display:flex;gap:10px;flex-wrap:wrap}
+  .btn{display:inline-block;padding:12px 18px;border-radius:6px;text-decoration:none;font-weight:600;
+    background:var(--weft);color:#f7f8f4;border:1px solid var(--weft)}
+  .btn.gh{background:transparent;color:var(--ink2);border:1px solid var(--line)}
+  .btn.gh:hover{border-color:var(--weft);color:var(--weft)}
+
+  .specimen{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px;position:relative}
+  .specimen:before{content:"";position:absolute;left:14px;right:14px;top:34px;height:1px;background:var(--line)}
+  .specimen .t{font:600 10px/1 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--mut);margin-bottom:16px}
+  .specimen pre{margin:0;font:11.8px/1.8 var(--mono);color:var(--ink2);white-space:pre}
+  .specimen pre .w{color:var(--weft);font-weight:600}
+  .specimen pre .x{color:var(--x86);font-weight:600}
+  .specimen pre .a{color:var(--arm);font-weight:600}
+  .specimen .legend{display:flex;gap:12px;margin-top:12px;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase}
+  .specimen .legend span{color:var(--mut)}
+  .specimen .legend b{color:var(--ink)}
+
+  section{padding:32px 0;border-top:1px solid var(--line)}
+  h2{font:400 clamp(22px,3.2vw,30px)/1.2 var(--serif);margin:0 0 8px}
+  .sub{color:var(--mut);margin:0 0 22px;max-width:70ch;font-size:14px}
+  .three{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  @media (max-width:880px){.three{grid-template-columns:1fr}}
+  .tile{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px;border-top-width:3px}
+  .tile.w{border-top-color:var(--weft)} .tile.x{border-top-color:var(--x86)} .tile.a{border-top-color:var(--arm)}
+  .tile h3{margin:0 0 6px;font:600 12.5px/1.3 var(--mono)}
+  .tile p{margin:0;color:var(--ink2);font-size:12.5px}
+  ul.facts{margin:0;padding-left:18px;color:var(--ink2);font-size:13.5px}
+  ul.facts li{margin:8px 0}
+  ul.facts b{color:var(--ink)}
+  footer{border-top:1px solid var(--line);padding:20px 0 40px;color:var(--mut);font-size:12px;display:flex;gap:10px;flex-wrap:wrap}
+  code{background:#eeede6;border:1px solid var(--line);border-radius:4px;padding:1px 4px;font-size:12.5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="brand">Weft-8 · compare</span>
+    <div class="r"><a href="play/">the three columns</a><span>·</span><a href="https://github.com/drsamonline/weft8-compare">source</a></div>
+  </div>
+
+  <div class="hero">
+    <div>
+      <p class="kick">one job · three machines · four jobs in all</p>
+      <h1>Which part is the<br><em>computer</em>, and which<br>part is the language?</h1>
+      <p class="lede">Write the same small job for the Loom's Weft-8, for x86-64 and for AArch64, and the
+      answer becomes obvious: the loop, the compare, the branch and the load are the machine. Everything
+      you thought was programming is mostly naming.</p>
+      <div class="cta">
+        <a class="btn" href="play/">See the three columns</a>
+        <a class="btn gh" href="https://github.com/drsamonline/app-jacquard">The machine it runs on</a>
+      </div>
+    </div>
+    <div class="specimen">
+      <div class="t">specimen 03 · the greater of two</div>
+      <pre><span class="w">CMP R1, R2</span>          <span class="x">cmpl  %ebx, %eax</span>     <span class="a">cmp   w0, w1</span>
+<span class="w">JG  big</span>             <span class="x">jg    .big</span>          <span class="a">b.gt  .big</span>
+<span class="w">MOV R3, R2</span>          <span class="x">movl  %ebx, %ecx</span>    <span class="a">mov   w2, w1</span>
+<span class="w">HLT</span>                 <span class="x">jmp   .done</span>         <span class="a">b     .done</span></pre>
+      <div class="legend"><span><b>weft-8</b></span><span><b>x86-64</b></span><span><b>aarch64</b></span></div>
+    </div>
+  </div>
+
+  <section>
+    <h2>Four jobs, three machines</h2>
+    <p class="sub">Add two numbers. Sum 1 to 5 with a loop. Pick the greater of two. Store a value and read
+    it back. Nothing here needs a library, a framework or a runtime — and that is the point.</p>
+    <div class="three">
+      <div class="tile w"><h3>Weft-8</h3><p>The Loom's machine: 16 registers, 27 two-byte opcodes, 256
+        bytes. This column is <b>executable</b> — the page runs it and the tests assert the result.</p></div>
+      <div class="tile x"><h3>x86-64</h3><p>The machine under most laptops. Hand-written illustrations of
+        the same job, labelled as illustrations rather than passed off as compiler output.</p></div>
+      <div class="tile a"><h3>AArch64</h3><p>The machine in most phones. Same job again — and the closest
+        of the three to the Weft-8 in shape, because both keep their flags in one place.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>What you notice after four examples</h2>
+    <ul class="facts">
+      <li><b>The ideas are all the same.</b> Load, add, compare, branch, store. Every machine on this page
+      is those five things wearing different names.</li>
+      <li><b>The differences are arithmetic and addressing.</b> x86 subtracts and tests in two instructions;
+      ARM does it in one; the Weft-8 needs three, because <code>SUB</code> sets flags but cannot branch.</li>
+      <li><b>Size is the visible cost of generality.</b> The Weft-8 reaches memory with a literal byte
+      address; x86 and ARM compute one from a frame or stack pointer, and their instructions grow to say so.</li>
+      <li><b>Built on the Loom.</b> The Weft-8 column is <code>weft8.js</code> from
+      <a href="https://github.com/drsamonline/app-jacquard">app-jacquard</a>, byte for byte the same engine.</li>
+    </ul>
+  </section>
+
+  <footer>
+    <span>Built on the Loom — <a href="https://github.com/drsamonline/app-jacquard">app-jacquard</a>:
+      <code>weft8.js</code> byte for byte</span>
+    <span>·</span><span>© 2026 Dr Sohil Momin</span><span>·</span><span>PolyForm Noncommercial 1.0.0</span>
+  </footer>
+</div>
+</body>
+</html>

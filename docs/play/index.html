@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Weft-8 beside x86 and ARM — one job, three machines</title>
+<meta name="description" content="The same four jobs written for the Loom's Weft-8, x86-64 and AArch64, side by side, with the Weft-8 column runnable.">
+<meta name="theme-color" content="#f2f0ea">
+<style>
+  :root{--paper:#f2f0ea;--card:#fbfaf6;--ink:#1e1f1c;--ink2:#4b4d47;--mut:#83857c;--line:#dbd9d0;
+        --weft:#2f6f4f;--x86:#8c4a3b;--arm:#2f5a8c;
+        --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+        --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.6 var(--mono)}
+  a{color:var(--weft)}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 18px 40px}
+  header{display:flex;align-items:center;gap:12px;padding:16px 0;border-bottom:1px solid var(--line);margin-bottom:14px}
+  .mark{width:26px;height:26px;border:1px solid var(--ink);border-radius:2px;position:relative;background:var(--card)}
+  .mark:before{content:"";position:absolute;left:0;right:0;top:8px;height:1px;background:var(--weft)}
+  .mark:after{content:"";position:absolute;left:0;right:0;top:16px;height:1px;background:var(--x86)}
+  h1{margin:0;font:600 13px/1.1 var(--mono);letter-spacing:.2em;text-transform:uppercase}
+  .sub{color:var(--mut);font-size:11.5px}
+  header .r{margin-left:auto;font-size:11.5px;color:var(--mut);display:flex;gap:10px}
+  header .r a{text-decoration:none}
+
+  .jobs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+  .jobs button{background:var(--card);border:1px solid var(--line);color:var(--ink);border-radius:6px;
+    padding:8px 12px;font:600 12px/1 var(--mono);cursor:pointer}
+  .jobs button[aria-current="true"]{border-color:var(--ink);background:#fff}
+  .jobs button:hover{border-color:var(--ink2)}
+
+  .jobline{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin-bottom:12px}
+  .jobline .t{font:600 15px/1.3 var(--serif);margin:0 0 4px}
+  .jobline p{margin:0;color:var(--ink2);font-size:12.5px}
+
+  .three{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  @media (max-width:1000px){.three{grid-template-columns:1fr}}
+  .col{background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden;display:flex;flex-direction:column}
+  .col .h{display:flex;align-items:baseline;gap:8px;padding:9px 12px;border-bottom:1px solid var(--line);
+    font:600 10.5px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase}
+  .col.weft .h{color:var(--weft);border-bottom-color:var(--weft)}
+  .col.x86 .h{color:var(--x86);border-bottom-color:var(--x86)}
+  .col.arm .h{color:var(--arm);border-bottom-color:var(--arm)}
+  .col .h small{margin-left:auto;letter-spacing:0;text-transform:none;color:var(--mut);font-weight:400;font-size:10.5px}
+  pre{margin:0;padding:12px;font:12.2px/1.75 var(--mono);color:var(--ink2);overflow:auto;white-space:pre;flex:1;max-height:330px}
+  pre .c{color:#9a9c92}
+  pre .k{font-weight:600}
+  .col.weft pre .k{color:var(--weft)}
+  .col.x86 pre .k{color:var(--x86)}
+  .col.arm pre .k{color:var(--arm)}
+  .col .f{padding:9px 12px;border-top:1px solid var(--line);font-size:11.5px;color:var(--mut)}
+  .col.weft .f b{color:var(--weft)}
+  .notes{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+  @media (max-width:1000px){.notes{grid-template-columns:1fr}}
+  .note{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px 14px}
+  .note h3{margin:0 0 6px;font:600 10.5px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--mut)}
+  .note p{margin:0;color:var(--ink2);font-size:12.5px}
+  .regs{display:grid;grid-template-columns:repeat(8,1fr);gap:4px;margin-top:10px}
+  .reg{border:1px solid var(--line);border-radius:4px;padding:4px;text-align:center;font-size:10.5px;color:var(--mut);background:#fff}
+  .reg b{display:block;color:var(--ink);font-size:11px}
+  .reg.hit{border-color:var(--weft);color:var(--weft)}
+  footer{margin-top:14px;padding-top:14px;border-top:1px solid var(--line);color:var(--mut);font-size:11.5px;
+    display:flex;gap:10px;flex-wrap:wrap}
+  code{background:#eeede6;border:1px solid var(--line);border-radius:4px;padding:1px 4px;font-size:11.5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="mark" aria-hidden="true"></span>
+    <div>
+      <h1>Weft-8 · x86-64 · AArch64</h1>
+      <div class="sub">one job, three machines · the Weft-8 column runs here</div>
+    </div>
+    <div class="r"><a href="../">about</a><span>·</span><a href="https://github.com/drsamonline/app-jacquard">the Loom</a></div>
+  </header>
+
+  <div class="jobs" id="jobs"></div>
+
+  <div class="jobline">
+    <p class="t" id="title">—</p>
+    <p id="job">—</p>
+  </div>
+
+  <div class="three">
+    <section class="col weft">
+      <div class="h">Weft-8 <small>runs here</small></div>
+      <pre id="weft">—</pre>
+      <div class="f" id="weftResult">—</div>
+    </section>
+    <section class="col x86">
+      <div class="h">x86-64 <small>illustration</small></div>
+      <pre id="x86">—</pre>
+      <div class="f">hand-written to show the shape, not compiler output</div>
+    </section>
+    <section class="col arm">
+      <div class="h">AArch64 <small>illustration</small></div>
+      <pre id="arm">—</pre>
+      <div class="f">hand-written to show the shape, not compiler output</div>
+    </section>
+  </div>
+
+  <div class="notes">
+    <div class="note">
+      <h3>what is the same</h3>
+      <p id="same">—</p>
+    </div>
+    <div class="note">
+      <h3>what actually differs</h3>
+      <p id="differs">—</p>
+    </div>
+  </div>
+
+  <div class="note" style="margin-top:12px">
+    <h3>the Weft-8 machine, after the run</h3>
+    <div class="regs" id="regs"></div>
+  </div>
+
+  <footer>
+    <span>Built on the Loom — <a href="https://github.com/drsamonline/app-jacquard">app-jacquard</a>:
+      <code>weft8.js</code> byte for byte</span>
+    <span>·</span><span>© 2026 Dr Sohil Momin</span><span>·</span><span>PolyForm Noncommercial 1.0.0</span>
+  </footer>
+</div>
+
+<script src="web-kit.js"></script>
+<script src="weft8.js"></script>
+<script src="compare.js"></script>
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+  var current = Compare.ALGORITHMS[0];
+
+  function renderJobs() {
+    var box = $("jobs");
+    box.innerHTML = "";
+    Compare.ALGORITHMS.forEach(function (a) {
+      var b = document.createElement("button");
+      b.setAttribute("aria-current", a.id === current.id ? "true" : "false");
+      b.textContent = a.title;
+      b.onclick = function () { current = a; renderJobs(); render(); };
+      box.appendChild(b);
+    });
+  }
+
+  function paint(text) {
+    /* colour the mnemonics without pretending to parse: the first token of a
+     * non-comment line is the mnemonic. */
+    return text.split("\n").map(function (line) {
+      var t = line.trim();
+      if (!t) return line;
+      if (t.charAt(0) === ";" || t.charAt(0) === "#") return '<span class="c">' + line + "</span>";
+      var m = /^(\s*(?:[\w.]+:)?\s*)([A-Za-z.]+)/.exec(line);
+      if (!m) return line;
+      return m[1] + '<span class="k">' + m[2] + "</span>" + line.slice((m[1] + m[2]).length);
+    }).join("\n");
+  }
+
+  function render() {
+    $("title").textContent = current.title;
+    $("job").textContent = current.job;
+    $("same").textContent = current.same;
+    $("differs").textContent = current.differs;
+    $("weft").innerHTML = paint(current.weft);
+    $("x86").innerHTML = paint(current.x86);
+    $("arm").innerHTML = paint(current.arm);
+
+    var r = Compare.run(current);
+    var box = $("regs");
+    box.innerHTML = "";
+    var hit = Object.keys(current.expect.reg || {}).map(String);
+    for (var i = 0; i < 16; i++) {
+      var d = document.createElement("div");
+      d.className = "reg" + (hit.indexOf(String(i)) >= 0 ? " hit" : "");
+      d.innerHTML = "<b>R" + i + "</b>" + (r.vm ? r.vm.r[i] : 0);
+      box.appendChild(d);
+    }
+    if (!r.vm) { $("weftResult").textContent = "does not assemble"; return; }
+    var bits = [r.bytes.length + " bytes", r.steps + " steps", r.halted ? "halted" : "stopped"];
+    Object.keys(current.expect.reg || {}).forEach(function (k) {
+      bits.push("R" + k + " = " + r.vm.r[+k]);
+    });
+    Object.keys(current.expect.ram || {}).forEach(function (k) {
+      bits.push("mem[" + k + "] = " + r.vm.mem[+k]);
+    });
+    $("weftResult").innerHTML = "<b>ran</b> · " + bits.join(" · ");
+  }
+
+  renderJobs();
+  render();
+})();
+</script>
+</body>
+</html>
