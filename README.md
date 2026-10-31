@@ -2,6 +2,12 @@
 
 # Weft-8 beside x86 and ARM
 
+<!-- shot:start -->
+
+![Screenshot](docs/shot.png)
+
+<!-- shot:end -->
+
 **Which part is the computer, and which part is the language?**
 
 [![Live columns](https://img.shields.io/badge/live-three%20columns-2f6f4f
