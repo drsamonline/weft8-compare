@@ -2,19 +2,13 @@
 
 # Weft-8 beside x86 and ARM
 
-<!-- shot:start -->
-
-![Screenshot](docs/shot.png)
-
-<!-- shot:end -->
-
 **Which part is the computer, and which part is the language?**
 
-[![Live columns](https://img.shields.io/badge/live-three%20columns-2f6f4f
-[![Test](https://img.shields.io/github/actions/workflow/status/drsamonline/weft8-compare/test.yml
-[![Build + deploy](https://img.shields.io/github/actions/workflow/status/drsamonline/weft8-compare/build-apps.yml
-[![Licence](https://img.shields.io/badge/licence-PolyForm%20Noncommercial%201.0.0-8c4a3b
-[![Built on the Loom](https://img.shields.io/badge/built%20on-the%20Loom%20(app--jacquard)-2f5a8c
+[![Live columns](https://img.shields.io/badge/live-three%20columns-2f6f4f?style=flat-square&labelColor=1e1f1c)](https://drsamonline.github.io/weft8-compare/)
+[![Test](https://img.shields.io/github/actions/workflow/status/drsamonline/weft8-compare/test.yml?branch=main&style=flat-square&label=tests&labelColor=1e1f1c)](https://github.com/drsamonline/weft8-compare/actions/workflows/test.yml)
+[![Build + deploy](https://img.shields.io/github/actions/workflow/status/drsamonline/weft8-compare/build-apps.yml?branch=main&style=flat-square&label=build&labelColor=1e1f1c)](https://github.com/drsamonline/weft8-compare/actions/workflows/build-apps.yml)
+[![Licence](https://img.shields.io/badge/licence-PolyForm%20Noncommercial%201.0.0-8c4a3b?style=flat-square&labelColor=1e1f1c)](LICENSE)
+[![Built on the Loom](https://img.shields.io/badge/built%20on-the%20Loom%20(app--jacquard)-2f5a8c?style=flat-square&labelColor=1e1f1c)](https://github.com/drsamonline/app-jacquard)
 
 [**Open the three columns →**](https://drsamonline.github.io/weft8-compare/)
 
