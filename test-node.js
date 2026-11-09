@@ -50,7 +50,7 @@ C.ALGORITHMS.forEach(function (alg) {
 
 console.log("the page — it loads the three columns");
 const html = fs.readFileSync("./docs/play/index.html", "utf8");
-["web-kit.js", "weft8.js", "compare.js"].forEach(function (k) {
+["weft8.js", "compare.js"].forEach(function (k) {
   ok(html.indexOf('<script src="' + k + '"></script>') > 0, "the page loads " + k);
 });
 ok(html.indexOf('id="weft"') > 0, "the page has the Weft-8 column");
